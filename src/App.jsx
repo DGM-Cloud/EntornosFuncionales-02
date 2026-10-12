@@ -10,7 +10,8 @@ const pages = { '/': Home, '/proyectos': Projects, '/soluciones': Solutions, '/n
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 const routeFromLocation = () => {
   const pathname = window.location.pathname;
-  const route = basePath && pathname.startsWith(basePath) ? pathname.slice(basePath.length) || '/' : pathname;
+  const relativePath = basePath && pathname.startsWith(basePath) ? pathname.slice(basePath.length) || '/' : pathname;
+  const route = relativePath.length > 1 ? relativePath.replace(/\/$/, '') : relativePath;
   return pages[route] ? route : '/';
 };
 const routeUrl = (route) => `${basePath}${route === '/' ? '/' : route}`;
