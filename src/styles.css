@@ -104,6 +104,7 @@ h1 em, h2 em { font-family: Georgia, 'Times New Roman', serif; font-weight: 400;
 .service-carousel-controls button { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--navy); font-size: 20px; cursor: pointer; transition: color .25s, background .25s, opacity .25s; }
 .service-carousel-controls button:hover:not(:disabled) { background: var(--navy); color: white; }
 .service-carousel-controls button:disabled { opacity: .28; cursor: default; }
+.service-carousel-controls .autoplay-control { font-size: 12px; letter-spacing: -.12em; }
 .service-carousel { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(690px, 68vw, 980px); gap: 24px; margin-right: calc(var(--pad) * -1); padding-right: var(--pad); overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline mandatory; scrollbar-width: none; }
 .service-carousel::-webkit-scrollbar { display: none; }
 .service-slide { display: grid; grid-template-columns: minmax(0,1.18fr) minmax(300px,.82fr); min-height: 460px; overflow: hidden; scroll-snap-align: start; background: white; box-shadow: 0 20px 60px rgba(7,24,43,.06); transition: box-shadow .35s, opacity .35s; }
@@ -120,8 +121,11 @@ h1 em, h2 em { font-family: Georgia, 'Times New Roman', serif; font-weight: 400;
 .service-slide-copy > i { display: grid; place-items: center; width: 48px; height: 48px; margin-top: auto; border: 1px solid var(--line); border-radius: 50%; font-style: normal; transition: color .25s, background .25s; }
 .service-slide:hover .service-slide-copy > i { background: var(--navy); color: white; }
 .service-carousel-progress { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-top: 24px; }
-.service-carousel-progress span { height: 2px; background: var(--line); transition: background .3s; }
-.service-carousel-progress span.active { background: var(--blue); }
+.service-carousel-progress span { position: relative; height: 2px; overflow: hidden; background: var(--line); transition: background .3s; }
+.service-carousel-progress span.active { background: rgba(31,96,160,.28); }
+.service-carousel-progress span.active::after { content: ''; position: absolute; inset: 0; background: var(--blue); transform: scaleX(1); transform-origin: left; }
+.service-carousel-shell.is-autoplaying .service-carousel-progress span.active::after { animation: service-progress 5.2s linear both; }
+@keyframes service-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .process { overflow: hidden; background: #e5edf1; }
 .process-stairs { display: grid; grid-template-columns: repeat(3,1fr); align-items: end; gap: 12px; min-height: 540px; }
 .process-step { display: flex; flex-direction: column; justify-content: space-between; min-height: 300px; padding: clamp(28px,3vw,46px); color: white; background: #436d8d; box-shadow: 0 20px 50px rgba(7,24,43,.09); transition: transform .35s ease, box-shadow .35s ease; }

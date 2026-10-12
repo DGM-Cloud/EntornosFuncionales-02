@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { assetPath, projects, services, sitePath } from '../data/content';
 import { Arrow } from '../components/Icons';
 import { ContactStrip, SectionHeading, TextLink } from '../components/Shared';
@@ -33,15 +33,53 @@ function Hero({ navigate }) {
 function ServiceCarousel({ navigate }) {
   const carouselRef = useRef(null);
   const [active, setActive] = useState(0);
+  const [autoplay, setAutoplay] = useState(true);
+  const [inView, setInView] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
-  const moveTo = (index) => {
+  const moveTo = useCallback((index) => {
     const next = Math.max(0, Math.min(services.length - 1, index));
     const carousel = carouselRef.current;
     const card = carousel?.children[next];
     if (!carousel || !card) return;
     carousel.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
     setActive(next);
-  };
+  }, []);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return undefined;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: .35 });
+    observer.observe(carousel);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotionPreference = () => setReducedMotion(media.matches);
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    updateMotionPreference();
+    updateVisibility();
+    media.addEventListener('change', updateMotionPreference);
+    document.addEventListener('visibilitychange', updateVisibility);
+    return () => {
+      media.removeEventListener('change', updateMotionPreference);
+      document.removeEventListener('visibilitychange', updateVisibility);
+    };
+  }, []);
+
+  const temporarilyPaused = hovered || focused || dragging;
+  const isAutoplaying = autoplay && inView && pageVisible && !reducedMotion && !temporarilyPaused;
+
+  useEffect(() => {
+    if (!isAutoplaying) return undefined;
+    const timer = window.setTimeout(() => moveTo((active + 1) % services.length), 5200);
+    return () => window.clearTimeout(timer);
+  }, [active, isAutoplaying, moveTo]);
 
   const syncActiveCard = () => {
     const carousel = carouselRef.current;
@@ -54,15 +92,16 @@ function ServiceCarousel({ navigate }) {
   };
 
   return (
-    <div className="service-carousel-shell">
+    <div className={`service-carousel-shell ${isAutoplaying ? 'is-autoplaying' : ''}`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <div className="service-carousel-toolbar">
         <p><span>{String(active + 1).padStart(2, '0')}</span><i /><span>{String(services.length).padStart(2, '0')}</span></p>
         <div className="service-carousel-controls" aria-label="Controles del carrusel">
           <button type="button" onClick={() => moveTo(active - 1)} disabled={active === 0} aria-label="Ver frente anterior">←</button>
+          <button type="button" className="autoplay-control" onClick={() => setAutoplay((playing) => !playing)} aria-label={autoplay ? 'Pausar carrusel automático' : 'Reanudar carrusel automático'} aria-pressed={!autoplay}>{autoplay ? 'Ⅱ' : '▶'}</button>
           <button type="button" onClick={() => moveTo(active + 1)} disabled={active === services.length - 1} aria-label="Ver frente siguiente">→</button>
         </div>
       </div>
-      <div ref={carouselRef} className="service-carousel" onScroll={syncActiveCard} role="region" aria-label="Cuatro frentes de trabajo" tabIndex="0">
+      <div ref={carouselRef} className="service-carousel" onScroll={syncActiveCard} onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }} onPointerDown={() => setDragging(true)} onPointerUp={() => setDragging(false)} onPointerCancel={() => setDragging(false)} role="region" aria-label="Cuatro frentes de trabajo" tabIndex="0">
         {services.map((service, index) => <a key={service.number} href={sitePath('/soluciones')} onClick={(event) => { event.preventDefault(); navigate('/soluciones'); }} className={`service-slide ${active === index ? 'active' : ''}`} aria-label={`${service.title}: ${service.short}`}>
           <div className="service-slide-image"><img src={service.image} alt="" loading={index === 0 ? 'eager' : 'lazy'} /><span>{service.number}</span></div>
           <div className="service-slide-copy"><p>Frente de trabajo {service.number}</p><h3>{service.title}</h3><span>{service.short}</span><i><Arrow diagonal /></i></div>
