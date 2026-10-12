@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { assetPath, projects, services, sitePath } from '../data/content';
 import { Arrow } from '../components/Icons';
 import { ContactStrip, SectionHeading, TextLink } from '../components/Shared';
@@ -30,6 +30,49 @@ function Hero({ navigate }) {
   );
 }
 
+function ServiceCarousel({ navigate }) {
+  const carouselRef = useRef(null);
+  const [active, setActive] = useState(0);
+
+  const moveTo = (index) => {
+    const next = Math.max(0, Math.min(services.length - 1, index));
+    const carousel = carouselRef.current;
+    const card = carousel?.children[next];
+    if (!carousel || !card) return;
+    carousel.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
+    setActive(next);
+  };
+
+  const syncActiveCard = () => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const cards = Array.from(carousel.children);
+    const closest = cards.reduce((best, card, index) => (
+      Math.abs(card.offsetLeft - carousel.scrollLeft) < Math.abs(cards[best].offsetLeft - carousel.scrollLeft) ? index : best
+    ), 0);
+    setActive(closest);
+  };
+
+  return (
+    <div className="service-carousel-shell">
+      <div className="service-carousel-toolbar">
+        <p><span>{String(active + 1).padStart(2, '0')}</span><i /><span>{String(services.length).padStart(2, '0')}</span></p>
+        <div className="service-carousel-controls" aria-label="Controles del carrusel">
+          <button type="button" onClick={() => moveTo(active - 1)} disabled={active === 0} aria-label="Ver frente anterior">←</button>
+          <button type="button" onClick={() => moveTo(active + 1)} disabled={active === services.length - 1} aria-label="Ver frente siguiente">→</button>
+        </div>
+      </div>
+      <div ref={carouselRef} className="service-carousel" onScroll={syncActiveCard} role="region" aria-label="Cuatro frentes de trabajo" tabIndex="0">
+        {services.map((service, index) => <a key={service.number} href={sitePath('/soluciones')} onClick={(event) => { event.preventDefault(); navigate('/soluciones'); }} className={`service-slide ${active === index ? 'active' : ''}`} aria-label={`${service.title}: ${service.short}`}>
+          <div className="service-slide-image"><img src={service.image} alt="" loading={index === 0 ? 'eager' : 'lazy'} /><span>{service.number}</span></div>
+          <div className="service-slide-copy"><p>Frente de trabajo {service.number}</p><h3>{service.title}</h3><span>{service.short}</span><i><Arrow diagonal /></i></div>
+        </a>)}
+      </div>
+      <div className="service-carousel-progress" aria-hidden="true">{services.map((service, index) => <span key={service.number} className={active === index ? 'active' : ''} />)}</div>
+    </div>
+  );
+}
+
 export default function Home({ navigate }) {
   return (
     <>
@@ -49,9 +92,7 @@ export default function Home({ navigate }) {
 
       <section className="services-preview section-pad">
         <SectionHeading eyebrow="Cuatro frentes de trabajo" title="De la intervención general al" italic="sistema especializado." copy="Una oferta organizada según el tipo de necesidad: implementar, resolver instalaciones, mantener o atender sistemas técnicos." />
-        <div className="service-list">
-          {services.map((service) => <a key={service.number} href={sitePath('/soluciones')} onClick={(e) => { e.preventDefault(); navigate('/soluciones'); }} className="service-row reveal"><img className="service-card-image" src={service.image} alt="" /><span className="service-number">{service.number}</span><div className="service-card-copy"><h3>{service.title}</h3><p>{service.short}</p></div><span className="service-arrow"><Arrow diagonal /></span></a>)}
-        </div>
+        <ServiceCarousel navigate={navigate} />
       </section>
 
       <section className="process section-pad">
