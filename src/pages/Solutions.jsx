@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageIntro } from '../components/Layout';
-import { services } from '../data/content';
+import { assetPath, services } from '../data/content';
 import { Plus } from '../components/Icons';
 import { ContactStrip, SectionHeading } from '../components/Shared';
 
@@ -8,7 +8,7 @@ export default function Solutions({ navigate }) {
   const [open, setOpen] = useState(0);
   return (
     <>
-      <PageIntro variant="solutions" index="02" eyebrow="Soluciones y servicios" title="Obra, instalaciones" italic="y sistemas." copy="Cuatro líneas de trabajo para implementar, reparar y mantener espacios residenciales, comerciales e industriales." image="/assets/project-07.jpg" />
+      <PageIntro variant="solutions" index="02" eyebrow="Soluciones y servicios" title="Obra, instalaciones" italic="y sistemas." copy="Cuatro líneas de trabajo para implementar, reparar y mantener espacios residenciales, comerciales e industriales." image={assetPath('assets/project-07.jpg')} />
       <section className="solutions-list section-pad">
         <SectionHeading eyebrow="Mapa de capacidades" title="Elige el frente de trabajo" italic="que necesitas resolver." />
         <div className="solution-accordion">
@@ -18,7 +18,7 @@ export default function Solutions({ navigate }) {
           </article>)}
         </div>
       </section>
-      <section className="specialist-banner"><img src="/assets/project-01.jpg" alt="Detalle de tubería para sistema contra incendios" /><div className="reveal"><p className="eyebrow light">Protección contra incendios</p><h2>Detección, alarma, protección activa y pasiva.</h2><p>La línea especializada incluye sistemas contra incendios, además de climatización y refrigeración comercial e industrial.</p></div></section>
+      <section className="specialist-banner"><img src={assetPath('assets/project-01.jpg')} alt="Detalle de tubería para sistema contra incendios" /><div className="reveal"><p className="eyebrow light">Protección contra incendios</p><h2>Detección, alarma, protección activa y pasiva.</h2><p>La línea especializada incluye sistemas contra incendios, además de climatización y refrigeración comercial e industrial.</p></div></section>
       <ContactStrip navigate={navigate} />
     </>
   );

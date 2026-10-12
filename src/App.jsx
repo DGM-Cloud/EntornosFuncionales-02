@@ -7,6 +7,13 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 
 const pages = { '/': Home, '/proyectos': Projects, '/soluciones': Solutions, '/nosotros': About, '/contacto': Contact };
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const routeFromLocation = () => {
+  const pathname = window.location.pathname;
+  const route = basePath && pathname.startsWith(basePath) ? pathname.slice(basePath.length) || '/' : pathname;
+  return pages[route] ? route : '/';
+};
+const routeUrl = (route) => `${basePath}${route === '/' ? '/' : route}`;
 const metadata = {
   '/': ['Entornos Funcionales | Obra, sistemas y mantenimiento', 'Implementación, remodelación, ingeniería, sistemas y mantenimiento integral para espacios residenciales, comerciales e industriales.'],
   '/proyectos': ['Proyectos | Entornos Funcionales', 'Registros visuales de implementación, acabados, construcción y sistemas realizados por Entornos Funcionales.'],
@@ -16,18 +23,18 @@ const metadata = {
 };
 
 export default function App() {
-  const initialPath = pages[window.location.pathname] ? window.location.pathname : '/';
+  const initialPath = routeFromLocation();
   const [path, setPath] = useState(initialPath);
 
   const navigate = (next) => {
     if (next === path) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-    window.history.pushState({}, '', next);
+    window.history.pushState({}, '', routeUrl(next));
     setPath(next);
     window.scrollTo(0, 0);
   };
 
   useEffect(() => {
-    const pop = () => setPath(pages[window.location.pathname] ? window.location.pathname : '/');
+    const pop = () => setPath(routeFromLocation());
     window.addEventListener('popstate', pop);
     return () => window.removeEventListener('popstate', pop);
   }, []);

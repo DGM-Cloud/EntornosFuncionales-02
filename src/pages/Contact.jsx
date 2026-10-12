@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageIntro } from '../components/Layout';
-import { contact } from '../data/content';
+import { assetPath, contact } from '../data/content';
 import { Arrow } from '../components/Icons';
 
 export default function Contact() {
@@ -12,7 +12,7 @@ export default function Contact() {
   };
   return (
     <>
-      <PageIntro variant="contact" index="04" eyebrow="Contacto" title="¿Qué necesita" italic="tu espacio?" copy="Indícanos si se trata de una implementación, una reparación, mantenimiento o un sistema especializado." image="/assets/contact.png" />
+      <PageIntro variant="contact" index="04" eyebrow="Contacto" title="¿Qué necesita" italic="tu espacio?" copy="Indícanos si se trata de una implementación, una reparación, mantenimiento o un sistema especializado." image={assetPath('assets/contact.png')} />
       <section className="contact-page section-pad">
         <div className="contact-details reveal"><p className="eyebrow">Canales directos</p><h2>Empecemos por una <em>conversación.</em></h2><a className="whatsapp-primary" href={contact.whatsapp} target="_blank" rel="noreferrer">Conversar por WhatsApp <Arrow diagonal /></a><div className="contact-block"><span>Teléfonos</span>{contact.phones.map(p => <a key={p} href={`tel:+51${p.replaceAll(' ', '')}`}>+51 {p}</a>)}</div><div className="contact-block"><span>Correo</span><a href={`mailto:${contact.email}`}>{contact.email}</a></div><div className="contact-block"><span>Dirección</span><p>{contact.address}</p></div></div>
         <form className="contact-form reveal" onSubmit={submit}>

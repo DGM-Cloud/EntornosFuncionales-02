@@ -1,5 +1,5 @@
 import React from 'react';
-import { projects, services } from '../data/content';
+import { assetPath, projects, services, sitePath } from '../data/content';
 import { Arrow } from '../components/Icons';
 import { ContactStrip, SectionHeading, TextLink } from '../components/Shared';
 
@@ -15,7 +15,7 @@ function Hero({ navigate }) {
         <h1 className="reveal" tabIndex="-1">Implementamos espacios.<br /><em>Resolvemos sistemas.</em></h1>
         <div className="hero-bottom reveal">
           <p>Implementación, remodelación, ingeniería y mantenimiento integral para entornos residenciales, comerciales e industriales.</p>
-          <a href="/proyectos" onClick={(e) => { e.preventDefault(); navigate('/proyectos'); }}>Explorar proyectos <Arrow diagonal /></a>
+          <a href={sitePath('/proyectos')} onClick={(e) => { e.preventDefault(); navigate('/proyectos'); }}>Explorar proyectos <Arrow diagonal /></a>
         </div>
       </div>
       <div className="scroll-cue"><span>Descubrir</span><i /></div>
@@ -43,7 +43,7 @@ export default function Home({ navigate }) {
       <section className="services-preview section-pad">
         <SectionHeading eyebrow="Cuatro frentes de trabajo" title="De la intervención general al" italic="sistema especializado." copy="Una oferta organizada según el tipo de necesidad: implementar, resolver instalaciones, mantener o atender sistemas técnicos." />
         <div className="service-list">
-          {services.map((service) => <a key={service.number} href="/soluciones" onClick={(e) => { e.preventDefault(); navigate('/soluciones'); }} className="service-row reveal"><img className="service-card-image" src={service.image} alt="" /><span className="service-number">{service.number}</span><div className="service-card-copy"><h3>{service.title}</h3><p>{service.short}</p></div><span className="service-arrow"><Arrow diagonal /></span></a>)}
+          {services.map((service) => <a key={service.number} href={sitePath('/soluciones')} onClick={(e) => { e.preventDefault(); navigate('/soluciones'); }} className="service-row reveal"><img className="service-card-image" src={service.image} alt="" /><span className="service-number">{service.number}</span><div className="service-card-copy"><h3>{service.title}</h3><p>{service.short}</p></div><span className="service-arrow"><Arrow diagonal /></span></a>)}
         </div>
       </section>
 
@@ -55,7 +55,7 @@ export default function Home({ navigate }) {
       </section>
 
       <section className="split-story">
-        <div className="split-image"><img src="/assets/project-05.jpg" alt="Trabajo de cubierta y estructura en proceso" loading="lazy" /></div>
+        <div className="split-image"><img src={assetPath('assets/project-05.jpg')} alt="Trabajo de cubierta y estructura en proceso" loading="lazy" /></div>
         <div className="split-content reveal"><p className="eyebrow light">Construcción · instalaciones · sistemas</p><h2>Lo visible y lo técnico forman parte del mismo espacio.</h2><p>La oferta abarca desde acabados y mobiliario hasta ingeniería eléctrica, climatización, refrigeración y sistemas contra incendios.</p><TextLink href="/soluciones" navigate={navigate} light>Explorar soluciones</TextLink></div>
       </section>
       <section className="company-showcase section-pad" aria-label="Muestra referencial de empresas">

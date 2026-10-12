@@ -27,7 +27,11 @@ npm run build
 
 ## Despliegue
 
-El proyecto está preparado para Vercel. Las rutas internas se resuelven mediante la reescritura incluida en `vercel.json`.
+El sitio se publica automáticamente en GitHub Pages cada vez que se actualiza la rama `main`:
+
+<https://dgm-cloud.github.io/EntornosFuncionales-02/>
+
+El flujo de publicación compila la aplicación, conserva la navegación de las cinco vistas y genera un respaldo para abrir o recargar rutas internas directamente.
 
 ## Fuente del material
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { PageIntro } from '../components/Layout';
-import { projects } from '../data/content';
+import { assetPath, projects } from '../data/content';
 import { ContactStrip, SectionHeading } from '../components/Shared';
 
 export default function Projects({ navigate }) {
@@ -34,7 +34,7 @@ export default function Projects({ navigate }) {
   };
   return (
     <>
-      <PageIntro variant="projects" index="01" eyebrow="Archivo visual" title="Así se ve el trabajo" italic="cuando está en proceso." copy="Una lectura visual de acabados, construcción, instalaciones y sistemas técnicos." image="/assets/project-04.jpg" />
+      <PageIntro variant="projects" index="01" eyebrow="Archivo visual" title="Así se ve el trabajo" italic="cuando está en proceso." copy="Una lectura visual de acabados, construcción, instalaciones y sistemas técnicos." image={assetPath('assets/project-04.jpg')} />
       <section className="project-gallery section-pad">
         <SectionHeading eyebrow="Selección de registros" title="Detalle técnico, ejecución" italic="y resultado." copy="Explora las imágenes por especialidad o abre cada registro para verlo a mayor escala." />
         <div className="filter-bar" role="group" aria-label="Filtrar proyectos">{filters.map(f => <button key={f} aria-pressed={filter === f} className={filter === f ? 'active' : ''} onClick={() => setFilter(f)}>{f}</button>)}</div>

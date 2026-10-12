@@ -1,5 +1,6 @@
 import React from 'react';
 import { Arrow } from './Icons';
+import { sitePath } from '../data/content';
 
 export function SectionHeading({ eyebrow, title, italic, copy, dark = false }) {
   return (
@@ -12,7 +13,7 @@ export function SectionHeading({ eyebrow, title, italic, copy, dark = false }) {
 
 export function TextLink({ href, children, navigate, light = false }) {
   const click = (e) => { if (navigate && href.startsWith('/')) { e.preventDefault(); navigate(href); } };
-  return <a className={`text-link ${light ? 'light' : ''}`} href={href} onClick={click}>{children}<Arrow diagonal /></a>;
+  return <a className={`text-link ${light ? 'light' : ''}`} href={href.startsWith('/') ? sitePath(href) : href} onClick={click}>{children}<Arrow diagonal /></a>;
 }
 
 export function ContactStrip({ navigate }) {

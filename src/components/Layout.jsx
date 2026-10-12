@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { navItems, contact } from '../data/content';
+import { assetPath, navItems, contact, sitePath } from '../data/content';
 import { Arrow, MenuIcon, WhatsAppIcon } from './Icons';
 
 export function Header({ path, navigate, darkHero = true }) {
@@ -21,17 +21,17 @@ export function Header({ path, navigate, darkHero = true }) {
 
   return (
     <header className={`site-header ${scrolled || !darkHero ? 'solid' : ''} ${open ? 'menu-open' : ''}`}>
-      <a href="/" className="brand" onClick={(e) => go(e, '/')} aria-label="Entornos Funcionales, ir al inicio">
-        <img className="header-logo" src="/assets/logo.png" alt="Entornos Funcionales" />
+      <a href={sitePath('/')} className="brand" onClick={(e) => go(e, '/')} aria-label="Entornos Funcionales, ir al inicio">
+        <img className="header-logo" src={assetPath('assets/logo.png')} alt="Entornos Funcionales" />
       </a>
       <nav className="desktop-nav" aria-label="Navegación principal">
-        {navItems.map((item) => <a key={item.path} className={path === item.path ? 'active' : ''} aria-current={path === item.path ? 'page' : undefined} href={item.path} onClick={(e) => go(e, item.path)}>{item.label}</a>)}
+        {navItems.map((item) => <a key={item.path} className={path === item.path ? 'active' : ''} aria-current={path === item.path ? 'page' : undefined} href={sitePath(item.path)} onClick={(e) => go(e, item.path)}>{item.label}</a>)}
       </nav>
       <a className="header-cta" href={contact.whatsapp} target="_blank" rel="noreferrer">WhatsApp <WhatsAppIcon /></a>
       <button className="menu-button" aria-label={open ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={open} onClick={() => setOpen(!open)}><MenuIcon open={open} /></button>
       <div className="mobile-panel" aria-hidden={!open}>
         <nav aria-label="Navegación móvil">
-          {navItems.map((item, index) => <a key={item.path} aria-current={path === item.path ? 'page' : undefined} href={item.path} onClick={(e) => go(e, item.path)}><span>0{index + 1}</span>{item.label}</a>)}
+          {navItems.map((item, index) => <a key={item.path} aria-current={path === item.path ? 'page' : undefined} href={sitePath(item.path)} onClick={(e) => go(e, item.path)}><span>0{index + 1}</span>{item.label}</a>)}
         </nav>
         <div className="mobile-contact"><a href={contact.whatsapp} target="_blank" rel="noreferrer">Conversar por WhatsApp</a><a href={`mailto:${contact.email}`}>{contact.email}</a></div>
       </div>
@@ -44,8 +44,8 @@ export function Footer({ navigate }) {
   return (
     <footer className="footer">
       <div className="footer-grid">
-        <div className="footer-brand"><img src="/assets/logo.png" alt="Entornos Funcionales Reconstrucción y Acabados" /><p>Soluciones integrales para espacios residenciales, comerciales e industriales.</p></div>
-        <div><h3>Navegación</h3>{navItems.map((n) => <a key={n.path} href={n.path} onClick={(e) => go(e, n.path)}>{n.label}</a>)}</div>
+        <div className="footer-brand"><img src={assetPath('assets/logo.png')} alt="Entornos Funcionales Reconstrucción y Acabados" /><p>Soluciones integrales para espacios residenciales, comerciales e industriales.</p></div>
+        <div><h3>Navegación</h3>{navItems.map((n) => <a key={n.path} href={sitePath(n.path)} onClick={(e) => go(e, n.path)}>{n.label}</a>)}</div>
         <div><h3>Contacto</h3><a href={contact.whatsapp} target="_blank" rel="noreferrer">WhatsApp ↗</a><a href={`mailto:${contact.email}`}>{contact.email}</a>{contact.phones.map(p => <a key={p} href={`tel:+51${p.replaceAll(' ', '')}`}>+51 {p}</a>)}</div>
         <div><h3>Ubicación</h3><p>{contact.address}</p><a href={contact.instagram} target="_blank" rel="noreferrer">Instagram ↗</a></div>
       </div>
