@@ -24,6 +24,7 @@ npm run build
 - Los nombres de clientes, ubicaciones y datos de obra que no estaban confirmados se omitieron.
 - Las etiquetas editoriales de fotografías son descriptivas y deben validarse con Entornos Funcionales antes de publicar.
 - Los nombres del carrusel empresarial son placeholders visibles de presentación y no representan clientes confirmados.
+- Los logotipos empresariales de muestra provienen de Simple Icons y se usan únicamente para visualizar el componente; deben sustituirse por clientes confirmados y autorizados antes de publicar la versión final.
 
 ## Despliegue
 

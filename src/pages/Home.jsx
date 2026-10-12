@@ -3,7 +3,14 @@ import { assetPath, projects, services, sitePath } from '../data/content';
 import { Arrow } from '../components/Icons';
 import { ContactStrip, SectionHeading, TextLink } from '../components/Shared';
 
-const sampleCompanies = ['NODO', 'ÁUREA', 'VÉRTICE', 'TRAMA', 'NEXO', 'HÁBITAT'];
+const sampleCompanies = [
+  { name: 'Bosch', logo: assetPath('assets/logos/bosch.svg') },
+  { name: 'Siemens', logo: assetPath('assets/logos/siemens.svg') },
+  { name: 'Samsung', logo: assetPath('assets/logos/samsung.svg') },
+  { name: 'LG', logo: assetPath('assets/logos/lg.svg') },
+  { name: '3M', logo: assetPath('assets/logos/3m.svg') },
+  { name: 'ABB', logo: assetPath('assets/logos/abb.svg') },
+];
 
 function Hero({ navigate }) {
   return (
@@ -48,10 +55,15 @@ export default function Home({ navigate }) {
       </section>
 
       <section className="process section-pad">
-        <SectionHeading eyebrow="Tres escalas de intervención" title="Un espacio funciona por" italic="capas." />
-        <div className="process-grid">
-          {[['01', 'Espacio', 'Acabados interiores, pintura, drywall, carpintería, mobiliario y vidriería.'], ['02', 'Infraestructura', 'Electricidad, gasfitería, tableros y mantenimiento de instalaciones.'], ['03', 'Sistemas', 'Climatización, refrigeración y protección contra incendios.']].map(([n, t, d]) => <article key={n} className="process-step reveal"><span>{n}</span><h3>{t}</h3><p>{d}</p></article>)}
+        <SectionHeading eyebrow="Tres escalas de intervención" title="Del acabado visible al" italic="sistema que lo sostiene." copy="Cada nivel amplía el alcance de la intervención: primero el espacio, luego su infraestructura y finalmente los sistemas especializados." />
+        <div className="process-stairs" aria-label="Escalas de intervención de menor a mayor profundidad técnica">
+          {[
+            ['01', 'Espacio', 'La capa visible', 'Acabados interiores, pintura, drywall, carpintería, mobiliario y vidriería.'],
+            ['02', 'Infraestructura', 'El soporte operativo', 'Electricidad, gasfitería, tableros y mantenimiento de instalaciones.'],
+            ['03', 'Sistemas', 'La especialidad técnica', 'Climatización, refrigeración y protección contra incendios.'],
+          ].map(([n, t, label, d]) => <article key={n} className="process-step reveal"><div className="process-step-top"><span>{n}</span><small>{label}</small></div><div><h3>{t}</h3><p>{d}</p></div></article>)}
         </div>
+        <p className="process-direction" aria-hidden="true"><span>Intervención general</span><i /><span>Mayor especialización</span></p>
       </section>
 
       <section className="split-story">
@@ -59,8 +71,8 @@ export default function Home({ navigate }) {
         <div className="split-content reveal"><p className="eyebrow light">Construcción · instalaciones · sistemas</p><h2>Lo visible y lo técnico forman parte del mismo espacio.</h2><p>La oferta abarca desde acabados y mobiliario hasta ingeniería eléctrica, climatización, refrigeración y sistemas contra incendios.</p><TextLink href="/soluciones" navigate={navigate} light>Explorar soluciones</TextLink></div>
       </section>
       <section className="company-showcase section-pad" aria-label="Muestra referencial de empresas">
-        <div className="company-heading"><div><p className="eyebrow">Experiencia empresarial</p><h2>Un espacio para las marcas que <em>ya confiaron.</em></h2></div><p className="sample-label">Muestra visual · Los nombres serán reemplazados por clientes autorizados.</p></div>
-        <div className="company-marquee"><div className="company-track">{[...sampleCompanies, ...sampleCompanies].map((name, index) => <span key={`${name}-${index}`} aria-hidden={index >= sampleCompanies.length}>{name}<small>Empresa</small></span>)}</div></div>
+        <div className="company-heading"><div><p className="eyebrow">Respaldo empresarial</p><h2>Las marcas que los respaldan tendrán <em>un lugar visible.</em></h2></div><p className="sample-label">Demostración visual · Estos logotipos no representan clientes de Entornos Funcionales. Se reemplazarán por empresas confirmadas y autorizadas.</p></div>
+        <div className="company-marquee"><div className="company-track">{[...sampleCompanies, ...sampleCompanies].map((company, index) => <span className="company-logo" key={`${company.name}-${index}`} aria-hidden={index >= sampleCompanies.length}><img src={company.logo} alt={index < sampleCompanies.length ? `${company.name}, logotipo demostrativo` : ''} loading="lazy" /></span>)}</div></div>
       </section>
       <ContactStrip navigate={navigate} />
     </>
